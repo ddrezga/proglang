@@ -73,3 +73,51 @@ fun oldest (dates : (int * int * int) list) =
 	in
 	    SOME(oldest_nonempty(dates))
 	end
+
+	
+fun filter_dups (xs : int list) = 
+    if null xs then []
+    else
+	let
+	    fun remove_elements (xs : int list, el : int) = 
+		if null xs then []
+		else if hd xs = el then remove_elements(tl xs, el)
+		else (hd xs) :: remove_elements(tl xs, el)
+	in 
+	    (hd xs) :: filter_dups(remove_elements(tl xs, hd xs))
+	end
+
+fun number_in_months_challenge (dates : (int * int * int) list, months : int list) =
+    if null dates orelse null months 
+    then 0
+    else
+	let
+	    val filtered_months = filter_dups(months)
+	in
+	    number_in_months(dates, filtered_months)
+	end
+
+fun dates_in_months_challenge (dates : ( int * int * int) list, months : int list) = 
+    if null dates orelse null months 
+    then []
+    else
+	let
+	    val filtered_months = filter_dups(months)
+	in
+	    dates_in_months(dates, filtered_months)
+	end
+
+fun reasonable_date (date : (int * int * int)) =
+    let
+	val y = #1 date
+	val m = #2 date
+	val d = #3 date
+	val feb = if (y mod 400) = 0  orelse ((y mod 4) = 0 andalso (y mod 100) > 0) then 29 else 28 
+	fun get_nth (xs : int list, nth : int) =
+	    if nth = 1 
+	    then hd xs 
+	    else get_nth(tl xs, nth - 1)
+	val days = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    in
+	(y > 0) andalso (m > 0) andalso (m <= 12) andalso (d > 0) andalso d <= get_nth(days, m)
+    end
