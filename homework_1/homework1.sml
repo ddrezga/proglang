@@ -91,21 +91,13 @@ fun number_in_months_challenge (dates : (int * int * int) list, months : int lis
     if null dates orelse null months 
     then 0
     else
-	let
-	    val filtered_months = filter_dups(months)
-	in
-	    number_in_months(dates, filtered_months)
-	end
+	number_in_months(dates, filter_dups(months))
 
 fun dates_in_months_challenge (dates : ( int * int * int) list, months : int list) = 
     if null dates orelse null months 
     then []
     else
-	let
-	    val filtered_months = filter_dups(months)
-	in
-	    dates_in_months(dates, filtered_months)
-	end
+	dates_in_months(dates, filter_dups(months))
 
 fun reasonable_date (date : (int * int * int)) =
     let
